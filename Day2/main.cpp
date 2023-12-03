@@ -41,7 +41,6 @@ int main() {
             }
 
         //Extracting the temporary variables for red, green, and blue
-
         if (isspace(str[i]) && str[i + 1] == 'r' && gameFound) { // check whether to assign numbers to red, green, or blue
             tempNumRed = stoi(numbers);
             numbers = "";
