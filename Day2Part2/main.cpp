@@ -25,8 +25,6 @@ bool gameFound = false;
 
 int main() {
 
-    // 12 red, 13 green, 14 blue MAX
-
     ifstream file("input.txt");
     string str;
     while (getline(file, str))
