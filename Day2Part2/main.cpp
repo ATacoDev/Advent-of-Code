@@ -6,7 +6,6 @@ using namespace std;
 string numbers = "";
 string gameIDString = "";
 
-// int IDSum = 0;
 int gameID = 0;
 int powerSet = 0; // red * green * blue
 int powerSetSum = 0; // sum of all power sets
@@ -20,8 +19,6 @@ int greatestGreen = 0;
 int greatestBlue = 0;
 
 bool gameFound = false;
-// bool valid = true;
-
 
 int main() {
 
@@ -29,7 +26,6 @@ int main() {
     string str;
     while (getline(file, str))
     {
-        // valid = true;
         gameIDString = "";
         gameFound = false;
         gameID = 0;
