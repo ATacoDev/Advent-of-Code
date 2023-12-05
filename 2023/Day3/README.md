@@ -13,7 +13,7 @@ The engine schematic (your puzzle input) consists of a visual representation of 
 
 Here is an example engine schematic:
 
-467..114..
+467..114.. <br>
 ...*......
 ..35..633.
 ......#...
