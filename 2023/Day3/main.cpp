@@ -1,33 +1,42 @@
 #include <iostream>
 #include <fstream>
+#include <stdexcept>
 
 using namespace std;
 
 int checkForSymbol(int tempNumber, int startingIndex) {
-    // do something
+  return 0;
 }
 
 int main() {
+  int total = 0;
+  // int startingIndex = -1;
+  string currentNum = "";
+  // bool startingIndexFound = false;
 
-    int tempStartingIndex = -1;
-    int tempNumber = 0;
-    int total = 0;
-
-    ifstream file("input.txt");
-    string str;
-    while (getline(file, str))
-    {
-        for (int i = 0; i < str.length(); i++) {
-            if (!isalpha(str[i]) && str[i] != ' ' && str[i] != '\n' && str[i] != '\t' && !isdigit(str[i]) && str[i] != '.') { // check if is symbol
-                // cout << str[i];               
-                 /*
-                Loop through every character. If it's a digit, loop through until it's not a digit, and set that to tempNumber.
-                Also that tempNumber's starting index as the location of the first digit.
-                After you have tempNumber and tempStartingIndex, insert into checkForSymbol function and see if there's an
-                adjacent symbol to the left, right, or diaganol to the tempNumber. If there is, add that number to total.
-                */
-            }
+  ifstream file("input.txt");
+  string str;
+  while (getline(file, str)) {
+    for (int i = 0; i < str.length(); i++) {
+      if (isdigit(str[i])) {
+        currentNum += str[i];
+      } else {
+        if (!currentNum.empty()) {
+          try {
+            cout << "Adding value: " << currentNum << endl;
+            total += stoi(currentNum);
+          } catch (const std::invalid_argument& e) {
+            cerr << "Invalid argument: " << e.what() << endl;
+          }
+          currentNum = "";
         }
+      }
     }
-return 0;
+  }
+
+  cout << "Total: " << total << endl;
+
+  return 0;
 }
+
+// add bool to check if there is a special character around, if so, turn string to int and add to total
