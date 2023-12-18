@@ -1,42 +1,101 @@
 #include <iostream>
 #include <fstream>
-#include <stdexcept>
+#include <vector>
 
 using namespace std;
 
-int checkForSymbol(int tempNumber, int startingIndex) {
-  return 0;
-}
-
 int main() {
-  int total = 0;
-  // int startingIndex = -1;
-  string currentNum = "";
-  // bool startingIndexFound = false;
 
-  ifstream file("input.txt");
-  string str;
-  while (getline(file, str)) {
-    for (int i = 0; i < str.length(); i++) {
-      if (isdigit(str[i])) {
-        currentNum += str[i];
-      } else {
-        if (!currentNum.empty()) {
-          try {
-            cout << "Adding value: " << currentNum << endl;
-            total += stoi(currentNum);
-          } catch (const std::invalid_argument& e) {
-            cerr << "Invalid argument: " << e.what() << endl;
-          }
-          currentNum = "";
-        }
-      }
+    string currentNum = "";
+    int total = 0;
+    bool specialCharacterNear = false;
+
+    vector<string> lines;
+    ifstream file("input.txt");
+    string line;
+
+    while (getline(file, line)) {
+        lines.push_back(line);
     }
-  }
 
-  cout << "Total: " << total << endl;
+    const int rows = lines.size();
+    const int cols = lines[0].size();
 
-  return 0;
+    // Declare a 2D array
+    char array2D[rows][cols];
+
+    // Copy the input into the array. x = '.', y = special character
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            if (lines[i][j] == '.') {
+                array2D[i][j] = 'x';
+            } else if (isdigit(lines[i][j])) {
+                array2D[i][j] = lines[i][j];
+            } else {
+                array2D[i][j] = 'y';
+            }
+        }
+    }
+
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            if (isdigit(array2D[i][j])) {
+                currentNum += array2D[i][j];
+                if (i == 0) { // first row
+                    if (j == 0) {
+                        if (array2D[i][j+1] == 'y' || array2D[i+1][j] == 'y' || array2D[i+1][j+1] == 'y') {
+                            specialCharacterNear = true;
+                        }
+                    } else if (j < cols - 1) {
+                        if (array2D[i][j-1] == 'y' || array2D[i][j+1] == 'y' || array2D[i+1][j-1] == 'y' || array2D[i+1][j] == 'y' || array2D[i+1][j+1] == 'y') {
+                            specialCharacterNear = true;
+                        }
+                    } else if (j == cols - 1) {
+                        if (array2D[i][j-1] == 'y' || array2D[i+1][j-1] == 'y' || array2D[i+1][j] == 'y') {
+                            specialCharacterNear = true;
+                        }
+                    }
+                } else if (i < rows - 1) { // middle rows
+                    if (j == 0) {
+                        if (array2D[i-1][j] == 'y' || array2D[i-1][j+1] == 'y' || array2D[i][j+1] == 'y' || array2D[i+1][j] == 'y' || array2D[i+1][j+1] == 'y') {
+                            specialCharacterNear = true;
+                        }
+                    } else if (j < cols - 1) {
+                        if (array2D[i-1][j-1] == 'y' || array2D[i-1][j] == 'y' || array2D[i-1][j+1] == 'y' || array2D[i][j-1] == 'y' || array2D[i][j+1] == 'y' || array2D[i+1][j-1] == 'y' || array2D[i+1][j] == 'y' || array2D[i+1][j+1] == 'y') {
+                            specialCharacterNear = true;
+                        }
+                    } else if (j == cols - 1) {
+                        if (array2D[i-1][j-1] == 'y' || array2D[i-1][j] == 'y' || array2D[i][j-1] == 'y' || array2D[i+1][j-1] == 'y' || array2D[i+1][j] == 'y') {
+                            specialCharacterNear = true;
+                        }
+                    }
+                } else if (i == rows - 1) { // last row
+                    if (j == 0) {
+                        if (array2D[i-1][j] == 'y' || array2D[i-1][j+1] == 'y' || array2D[i][j+1] == 'y') {
+                            specialCharacterNear = true;
+                        }
+                    } else if (j < cols - 1) {
+                        if (array2D[i-1][j-1] == 'y' || array2D[i-1][j] == 'y' || array2D[i-1][j+1] == 'y' || array2D[i][j-1] == 'y' || array2D[i][j+1] == 'y') {
+                            specialCharacterNear = true;
+                        }
+                    } else if (j == cols - 1) {
+                        if (array2D[i-1][j-1] == 'y' || array2D[i-1][j] == 'y' || array2D[i][j-1] == 'y') {
+                            specialCharacterNear = true;
+                        }
+                    }
+                }
+            } else {
+                if (currentNum != "" && specialCharacterNear) { // make sure we don't add empty strings
+                    cout << "Adding: " << currentNum << endl;
+                    total += stoi(currentNum);
+                }
+                specialCharacterNear = false;
+                currentNum = "";
+            }
+        }
+    }
+
+    cout << "Total: " << total << endl;
+
+    return 0;
 }
-
-// add bool to check if there is a special character around, if so, turn string to int and add to total
