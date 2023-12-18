@@ -39,6 +39,13 @@ int main() {
 
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
+            cout << array2D[i][j] << " ";
+        }
+        cout << endl;
+    }
+
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
             if (isdigit(array2D[i][j])) {
                 currentNum += array2D[i][j];
                 if (i == 0) { // first row
